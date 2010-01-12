@@ -1,0 +1,68 @@
+body{
+	background: #fff none;
+}
+
+.authFormContainer{
+	position: relative;
+	top: 100px;
+	text-align: center;
+}
+.authFormContent{
+	padding-top: 35px;
+}
+
+.authLogo{
+	margin: 0 0 20px 0;
+}
+
+.auth_small_btn{
+	width: 103px;
+	height: 22px;
+	margin: 0;
+	padding: 0;
+	border: 0;
+	background: #fff url('../images/auth_small_submit_btn.gif') no-repeat scroll center center !important;
+}
+
+td{
+	border: 0;
+}
+
+#authForm{
+	background: url('../images/auth_bg.gif') no-repeat scroll center bottom;
+	margin-left: auto;
+	margin-right: auto;
+	width: 400px;
+	height: 200px;
+}
+
+#authTbl{
+	width: 350px;
+	text-align: center;
+	margin-left: auto;
+	margin-right: auto;
+	border: 1px solid red;
+}
+
+#authTbl td{
+	text-align: left;
+}
+
+#authForm table{
+	margin: 10px;
+}
+
+#authForm td{
+	margin: 10px;
+}
+
+#authForm label.required:after {
+    content: '';
+    color: #FFF;
+    font-size: 1%;
+}
+
+.centerContent {
+    margin-top: 18px;
+    height: 20px;
+}
