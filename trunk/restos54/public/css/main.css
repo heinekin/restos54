@@ -1,0 +1,411 @@
+ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,body,html,p,blockquote,fieldset,input
+{ margin: 0; padding: 0; }
+a img,:link img,:visited img { }
+
+fieldset {
+    border: 1px solid #99BBE8;
+}
+
+body, td
+{
+  margin: 0;
+  padding: 0;
+  font-family: Arial, Verdana, sans-serif;
+  font-size: 11px;
+  color:#666;
+}
+
+body
+{
+  padding: 0 20px 20px 20px;
+  background: #000 url('../images/bg.jpg') repeat-x fixed top left;
+}
+
+a
+{
+  text-decoration: none;
+  color: #cc6b15;
+  border: 0;
+}
+
+a:hover
+{
+  text-decoration: underline;
+	border: 0;
+}
+
+img{
+	border: 0;
+}
+
+h1{
+	height: 29px;
+	padding: 7px 5px 0 5px;
+	margin: 0 0 20px 0;
+	font-size: 17px;
+	font-weight:normal;
+	border: 1px solid #c0c0c0;
+	background: #fff url('../images/h1_bg.gif') repeat-x scroll top left;
+}
+h2{
+	font-size: 15px;
+    margin: 0 0 20px 0;
+}
+h3{
+	height: 15px;
+	padding: 2px 5px 2px 5px;
+	margin: 0 0 20px 0;
+	font-size: 11px;
+	color:#666;
+	font-weight: bolder;
+	border: 0;
+	background: #efefef;
+}
+ul.liste_liens {
+    list-style-image: none;
+    margin-bottom: 20px;
+}
+
+ul.liste_liens li{
+    background: #FFF url('../images/arrows_puce.gif') no-repeat scroll center left;
+    padding-left: 15px;
+    padding-right: 10px;
+}
+
+ul.inline li {
+    display: inline;
+}
+
+ul.block li {
+    display: block;
+}
+
+a.lien {
+    cursor: pointer;
+}
+
+th{
+	background: #dfdfdf;
+	border: 1px solid white;
+	padding: 2px 4px 2px 4px;
+	margin:10px;
+}
+table{
+	border-collapse: collapse;
+}
+
+div{
+    border: 0px solid #777;
+}
+
+input{
+	font-family: Arial, Verdana, sans-serif;
+	background: url('../images/bg_input.gif') repeat-x scroll top left;
+    font-size: 11px;
+	padding: 3px 2px 1px 2px;
+	color: #444;
+	border: 1px solid #b5b8c8;
+}
+
+input.disabled {
+    color: #eee;
+    background: #ddd;
+}
+
+form button{
+	font-family: Arial, Verdana, sans-serif;
+    font-size: 11px;
+	padding: 3px 2px 1px 2px;
+	color: #444;
+}
+
+select{
+	font-size: 11px;
+	color: #666;
+	border: 1px solid #bbb;
+	padding: 2px 2px 2px 0;
+}
+
+input.datePicker {
+    font-family: Arial, Verdana, sans-serif;
+	background: url('../images/icon/calendar.png') no-repeat scroll center right;
+    font-size: 11px;
+	padding: 3px 18px 1px 2px;
+	color: #444;
+	border: 1px solid #b5b8c8;
+}
+
+label.required:after {
+    content: ' *';
+    color: #000;
+    font-size: 120%;
+}
+
+/**
+ * Classes
+ */
+
+table.mainTbl{
+	width: 100%;
+    border-collapse:collapse;
+	height:86%;
+}
+
+td.leftMainTbl, td.spaceTd, td.topMainTbl, td.spaceTr, td.navMainTbl, td.centerMainTbl {
+    margin: 0;
+    background: #FFF;
+	padding: 5px;
+	vertical-align: top;
+}
+
+td.navMainTbl {
+    padding: 0px;
+}
+
+.navMainTbl{
+    border-left: 1px solid #99bbe8;
+	border-right: 1px solid #99bbe8;
+	border-top: 1px solid #99bbe8;
+	height: 28px;
+}
+
+.leftMainTbl{
+	border: 1px solid #99bbe8;
+	width: 170px;
+}
+
+.topMainTbl{
+	border: 1px solid #99bbe8;
+    height: 28px;
+}
+
+.topMainDivLeft{
+	width:49%;
+	float:left;
+	padding-top: 1px;
+}
+.topMainDivRight{
+	width:49%;
+	float:left;
+    text-align: right;
+	padding-top: 1px;
+}
+.topMainDivRight img {
+    margin-left: 2px;
+    border: 1px solid #FFF;
+}
+.topMainDivRight img.selected {
+    border: 1px solid #000;
+}
+
+.topMainTbl li{
+	list-style: none inside;
+	display: inline;
+}
+
+.centerMainTbl{
+	border-left: 1px solid #99bbe8;
+	border-right: 1px solid #99bbe8;
+	border-bottom: 1px solid #99bbe8;
+    /*height: 100%;*/
+}
+.leftMainTbl{
+	border-left: 1px solid #99bbe8;
+	border-right: 1px solid #99bbe8;
+	border-bottom: 1px solid #99bbe8;
+    /*height: 100%;*/
+}
+
+.spaceTd {
+	background: transparent !important;
+	border:0;
+	margin:0;
+	padding:0 !important;
+	width:10px;
+}
+
+.spaceTr{
+	background: transparent !important;
+	border:0;
+	margin:0;
+	padding:0 !important;
+	height:10px;
+}
+
+.error_list{
+	color: #f00;
+	list-style: none;
+}
+
+.ok {
+    color: #fff;
+    background: #BFC481;
+    padding: 5px;
+    border-top: 1px solid #A6AA70;
+    border-bottom: 1px solid #A6AA70;
+}
+.error {
+    background: #f00;
+    color: #fff;
+    padding: 5px;
+    margin: 10px 0 10px 0;
+    border: 0;
+    border-top: 1px solid #a00;
+    border-bottom: 1px solid #a00;
+}
+
+.small_btn{
+	width: 104px;
+	height: 23px;
+	margin: 0;
+	padding: 0;
+	border: 0;
+	background: #fff url('../images/small_submit_btn.gif') no-repeat scroll center center !important;
+}
+.large_btn{
+	width: 208px;
+	height: 23px;
+	margin: 0;
+	padding: 0;
+	border: 0;
+	background: #fff url('../images/large_add_btn.jpg') no-repeat scroll center center !important;
+}
+
+.btnBottomGrid {
+    border-color: #99BBE8;
+    border-style: solid;
+    border-width: 0px 1px 1px 1px;
+    text-align: center;
+}
+
+/**
+ * ID
+ */
+
+#bohd_logo_top{
+	padding:10px;
+	height: 50px;
+        padding-right:0px;
+}
+
+#menu_theme{
+        text-align: right;
+        border:none;
+}
+
+table#tableMain {
+    width: 100%;
+}
+
+table#tableMain div#rightMain {
+    padding: 0px 20px 0px 20px;
+    overflow: auto;
+    text-align: left;
+}
+
+/**
+* EXT JS
+*/
+/*.x-menu-item-icon {
+    height: auto;
+    width: auto;
+}
+*/
+.x-menu {
+    background: #F0F0F0 none;
+}
+
+#overlay {
+    background-color: #000;
+    left:0;
+    position:absolute;
+    top:0;
+    z-index:80;
+    opacity: 0.6;
+    filter: alpha(opacity = 60);
+}
+
+.msg .x-box-mc {
+    font-size:14px;
+}
+
+#msg-div {
+    position:absolute;
+    left:35%;
+    top:10px;
+    width:250px;
+    z-index:20000;
+}
+
+/* style rows on mouseover */
+.x-grid3-row-over .x-grid3-cell-inner {
+font-weight: bold;
+}
+
+
+.x-grid3-locked, .x-grid3-unlocked {
+	overflow: hidden;
+	position: absolute;
+}
+.x-grid3-locked {
+	border-right: 1px solid #99BBE8;
+}
+.x-grid3-locked .x-grid3-scroller {
+	overflow: hidden;
+}
+.x-grid3-locked .x-grid3-row {
+	border-right: 0;
+}
+.x-grid3-scroll-spacer {
+	height: 19px;
+}
+.x-grid3-unlocked .x-grid3-header-offset {
+	padding-left: 0;
+}
+.x-grid3-unlocked .x-grid3-row {
+	border-left: 0;
+}
+/* [OPTIONAL] -- may be used for either Ext.grid.GroupSummary / Ext.ux.grid.GridSummary plugins */
+.x-grid3-summary-row{border-left:1px solid #fff;border-right:1px solid #fff;color:#333;background:#f1f2f4;}
+.x-grid3-summary-row .x-grid3-cell-inner{font-weight:bold;padding-bottom:4px;}
+.x-grid3-cell-first .x-grid3-cell-inner{padding-left:16px;}
+.x-grid-hide-summary .x-grid3-summary-row{display:none;}
+.x-grid3-summary-msg{padding:4px 16px;font-weight:bold;}
+
+
+/* [REQUIRED] (by Ext.ux.grid.GridSummary plugin) */
+.x-grid3-gridsummary-row-inner{overflow:hidden;width:100%;}/* IE6 requires width:100% for hori. scroll to work */
+.x-grid3-gridsummary-row-offset{width:10000px;}
+.x-grid-hide-gridsummary .x-grid3-gridsummary-row-inner{display:none;}
+
+/**
+* FORMULAIRE
+*/
+table.formTable td {
+    padding: 4px;
+}
+
+td.datePickerContainer td{
+    padding: 0px;
+}
+
+td.datePickerContainer th{
+    border: none;
+}
+
+form .hidden {
+    display: none;
+}
+
+form .chpError {
+    border: 1px solid #F00;
+}
+
+form td.subform {
+    padding: 10px 5px 5px 20px;
+}
+
+ul.errors li {
+    color: #A33;
+    font-style: italic;
+}

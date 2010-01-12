@@ -1,0 +1,1 @@
+{include file=$this->partiel('ad54', 'stocks', 'stocks')}
