@@ -68,7 +68,7 @@ var editor = new Ext.ux.grid.RowEditor({
         });
 
 grid = new Ext.grid.GridPanel({
-
+columnLines : true,
             iconCls: "icon-grid",
             frame: true,
 collapsible: true,
@@ -139,6 +139,7 @@ function onDelete() {
 function onOpen() {
 grid.destroy();
 grid = new Ext.grid.GridPanel({
+columnLines : true,
             iconCls: "icon-grid",
             frame: true,
             title: "Centres",

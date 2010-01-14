@@ -409,3 +409,23 @@ ul.errors li {
     color: #A33;
     font-style: italic;
 }
+
+.x-grid3-cell-inner.x-grid3-col-livraison1 {
+    background-color: #CCFFCC;
+}
+
+.x-grid3-cell-inner.x-grid3-col-livraison2 {
+    background-color: #CCCCFF;
+}
+.x-grid3-cell-inner.x-grid3-col-livraison3 {
+    background-color: #FFFF99;
+}
+.x-grid3-cell-inner.x-grid3-col-livraison4 {
+    background-color: #FFCCCC;
+}
+.x-grid3-cell-inner.x-grid3-col-livraison5 {
+    background-color: #CCFFCC;
+}
+.x-grid3-cell-inner.x-grid3-col-livraison6 {
+    background-color: #CCCCFF;
+}

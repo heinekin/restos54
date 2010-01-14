@@ -199,6 +199,7 @@ var Usergrid = {
     {
         if(w == 1){
         this.grid = new Ext.grid.GridPanel({
+columnLines : true,
             id: 'grid1',
             iconCls: "icon-grid",
             frame: true,
@@ -244,6 +245,7 @@ var Usergrid = {
        else
        {
        this.grid = new Ext.grid.GridPanel({
+columnLines : true,
             id: 'grid1',
             renderTo: "usergrid",
             iconCls: "icon-grid",

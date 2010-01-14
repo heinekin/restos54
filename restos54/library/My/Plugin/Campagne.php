@@ -18,11 +18,13 @@ class My_Plugin_Campagne extends Zend_Controller_Plugin_abstract
 
         if($auth->hasIdentity()) {
 
-            $campagne = new Campagne();
-            $result = $campagne->fetchRow("etat=1");
+            $sql = "SELECT id, DATE_FORMAT(campagne, '%d/%m/%Y') as campagne, description, type
+                FROM campagne
+                WHERE etat=1";
+
+        $result = (array)Zend_Registry::get('db')->fetchRow($sql);
             if(!is_null($result))
             {
-                $result = $result->toArray();
                 $semaine = new Semaine();
                 $sem = $semaine->fetchRow("id_campagne = ".$result['id']);
                 $this->_camp = new My_Campagne();
@@ -48,7 +50,7 @@ class My_Plugin_Campagne extends Zend_Controller_Plugin_abstract
 
             $viewRenderer = Zend_Controller_Action_HelperBroker::getStaticHelper('ViewRenderer');
             if($this->_camp instanceof My_Campagne){
-                $viewRenderer->view->camp = "Campagne ".$this->_camp->get_type() . " - " . $this->_camp->get_year(). " - Semaine " .$this->_camp->getSemaine();
+                $viewRenderer->view->camp = "Campagne ".$this->_camp->get_type() . " - commencée le " . $this->_camp->get_year(). " - Semaine " .$this->_camp->getSemaine();
 
             }
             else
