@@ -131,7 +131,7 @@ var editor = new Ext.ux.grid.RowEditor({
         });
 
 grid = new Ext.grid.GridPanel({
-
+columnLines : true,
             iconCls: "icon-grid",
             frame: true,
             title: "Les produits",
@@ -212,6 +212,7 @@ function onDelete() {
 function onOpen() {
 grid.hide();
 var grid2 = new Ext.grid.GridPanel({
+columnLines : true,
             iconCls: "icon-grid",
             autoScroll: true,
             height: 300,

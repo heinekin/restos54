@@ -118,6 +118,7 @@ var Usergrid = {
     initGrid: function()
     {
         this.grid = new Ext.grid.GridPanel({
+columnLines : true,
             renderTo: "usergrid",
             iconCls: "icon-grid",
             frame: true,

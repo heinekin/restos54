@@ -43,6 +43,7 @@
 
     // create the Grid
     var grid = new Ext.grid.GridPanel({
+columnLines : true,
         store: store,
 collapsible: true,
         columns: [
@@ -183,17 +184,8 @@ var swf = swfobject.embedSWF(
         renderTo: 'quotas',
 contentEl: 'chart',
         height:340,
-        layout:'fit'/*,
-tbar: [{
-                text: "Imprimer",
-                iconCls: "silk-printer",
-                handler: onPrint
-            }]*/
+        layout:'fit'
     });
 
-/*function onPrint() {
-
-Ext.ux.Printer.print(this);
-}*/
         {/literal}]]></content>    </bloc>
 </blocs>
