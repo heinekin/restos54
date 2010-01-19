@@ -26,6 +26,6 @@ class UserRightFeature extends FullModel {
 
         $bind = array(':userId' => intval($user_id, 10));
 
-        return $this->getDefaultAdapter()->fetchAll($sql, $bind, Zend_Db::FETCH_OBJ);
+        return $this->getDefaultAdapter()->fetchAll($sql, $bind);
     }
 }

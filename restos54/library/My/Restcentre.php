@@ -70,10 +70,14 @@ class My_Restcentre extends Zend_Rest_Controller
         $my = $this->_getAllParams();
         $json = $this->_request->getPost('data');
         $data = Zend_Json_Decoder::decode($json);
+        $id = $data['id'];
         unset($data['id']);
 
         $centre = new Centre();
+        $res = $centre->fetchAll();
+        $order = count($res);
         $result = $centre->fetchRow("nom='".$data['nom']."'");
+
         if(!is_null($result))
         {
             $tab = array('success' => 'Erreur !', 'message' => 'Le centre existe déjà !', 'data' => array('test' => 'test'));
@@ -82,6 +86,30 @@ class My_Restcentre extends Zend_Rest_Controller
         {
             $centre->createRow($data);
             $id = $centre->insert($data);
+
+            $feature = new Feature();
+            
+            $row = $feature->createRow();
+            $row->code = 'CENTRES_CENTRE_'. $id;
+            $row->title = $data['nom'];
+            $row->module = 'centres';
+            $row->controller = 'Defaut';
+            $row->action = 'index';
+            $row->order = $order;
+            $row->feature_type_id = 2;
+            $row->parent_id = 2;
+            $id_feature = $row->save();
+
+            $row = $feature->createRow();
+            $row->code = 'CENTRES_CENTRE_'. $id.'_BDS' ;
+            $row->title = 'Bons de sortie';
+            $row->module = 'centres';
+            $row->controller = 'Bds';
+            $row->action = 'index';
+            $row->order = 1;
+            $row->feature_type_id = 2;
+            $row->parent_id =$id_feature;
+            $id_feature = $row->save();
 
             $tab = array('success' => 'Création réussie', 'message' => 'Le centre \''.$data['nom'].'\' à été créé', 'data' => array('test' => 'test'));
 
@@ -130,6 +158,9 @@ class My_Restcentre extends Zend_Rest_Controller
                 $where = $centre->getAdapter()->quoteInto('id = ?', $id);
                 $result = $centre->update($tab_centre, $where);
 
+                $feature = new Feature();
+                $row = $feature->update(array('title'=>$nom), "code='CENTRES_CENTRE_".$id."' OR code ='CENTRES_CENTRE_".$id."_BDS'");
+         
                 $tab = array('success' => 'Mise à jour réussie', 'message' => 'Le centre \''.$nom.'\' à été mis à jour', 'data' => array('test' => 'test'));
 
             }
@@ -173,6 +204,11 @@ class My_Restcentre extends Zend_Rest_Controller
         $centre = new Centre();
         $where = $centre->getAdapter()->quoteInto('id = ?', $id);
         $result = $centre->delete($where);
+
+
+        $feature = new Feature();
+        $row = $feature->delete("code='CENTRES_CENTRE_".$id."' OR code ='CENTRES_CENTRE_".$id."_BDS'");
+
 
         $luc = new LinkUserCentre();
         $result = $luc->fetchAll("id_centre='".$id."'");

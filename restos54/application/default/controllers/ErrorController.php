@@ -12,7 +12,6 @@ class ErrorController extends Zend_Controller_Action
 
         // on initialise le loggueur
         $logger = new Zend_Log();
-        Zend_Registry::get('logger')->write($errors);
         $userSession = new Zend_Session_Namespace('User_Login');
 
         // Ensuite, on récupère la réponse

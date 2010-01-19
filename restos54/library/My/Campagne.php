@@ -7,6 +7,7 @@ class My_Campagne {
     private $_desc;
     private $_type;
     private $_semaine;
+    private $_centre;
 
     public function __construct($selected = 0) {
         $this->setSelected($selected);
@@ -18,6 +19,14 @@ class My_Campagne {
 
     public function getSelected() {
         return $this->_selected;
+    }
+
+    public function setCentre($camp) {
+        $this->_centre = $camp;
+    }
+
+    public function getCentre() {
+        return $this->_centre;
     }
 
     public function setSemaine($sem) {

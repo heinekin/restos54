@@ -3,12 +3,14 @@ class My_Restbnf extends Zend_Rest_Controller
 {
     protected $no_results;
     public $id_campagne;
+    public $type_campagne;
 
     public function init()
     {
         $session = (Zend_Session::namespaceGet('Campagne'));
         $campagne = $session['camp'];
         $this->id_campagne = $campagne->getSelected();
+        $this->type_campagne = $campagne->get_type();
     }
 
     /**
@@ -23,59 +25,8 @@ class My_Restbnf extends Zend_Rest_Controller
     {
     $this->getResponse()->setHeader('Content-Type', 'application/json', true);
     $id = $this->_getParam('id', 0);
-    if(isset($_GET['id']) && !empty($_GET['id']))
-            $id_semaine = $_GET['id'];
-        $sql = "SELECT id FROM campagne WHERE id<".$this->id_campagne."  ORDER BY id DESC LIMIT 0,1";
-        $result = (array)Zend_Registry::get('db')->fetchAll($sql);
-        $previous_id = $result[0]['id'];
-        
-        
-    $sql = "SELECT p.repas_servis, p.repas_prevus, p.id_semaine, p.id_centre
-                FROM prevision AS p
-                WHERE
-                        p.id_campagne = ".$previous_id;
-        $result = (array)Zend_Registry::get('db')->fetchAll($sql);
-$centre = array();
-$total = 0;
-        foreach($result as $a)
-        {
-if(!array_key_exists($a['id_centre'], $centre))
-    $centre[$a['id_centre']] = $a['repas_servis'];
-    else
-            $centre[$a['id_centre']] += $a['repas_servis'];
-            $total += $a['repas_servis'];
-        }
-
-
-
-        $sql = "SELECT c.id, c.nom as centre, p.repas_servis, p.repas_prevus
-                FROM centre AS c
-                LEFT OUTER JOIN prevision AS p
-                    ON  p.id_centre = c.id
-                    AND
-                        p.id_semaine = ".$id_semaine."
-                    AND
-                        P.id_campagne = ".$this->id_campagne;
-        $result = (array)Zend_Registry::get('db')->fetchAll($sql);
-
-        foreach($result as $b => $a)
-        {
-            if(array_key_exists($a['id'], $centre)){
-                $result[$b]['parts'] = $centre[$a['id']];
-                $result[$b]['repartition'] = (int)(($centre[$a['id']] / $total)*100) . " %";
-            }
-            else
-            {
-                $result[$b]['parts'] = 0;
-                $result[$b]['repartition'] = "0 %";
-            }
-            if(is_null($a['repas_servis'])){
-                $result[$b]['repas_servis'] = 0;}
-            if(is_null($a['repas_prevus']))
-                $result[$b]['repas_prevus'] = 0;
-
-        }
-        $tab = array('success' => 'true', 'message' => 'Chargement des données', 'data' => $result);
+    
+        $tab = array('success' => 'true', 'message' => 'Chargement des données', 'data' => $id);
 
         $this->_helper->json($tab);
     }
@@ -97,10 +48,16 @@ if(!array_key_exists($a['id_centre'], $centre))
         $this->getResponse()->setHeader('Content-Type', 'application/json', true);
         $id_semaine = $this->_getParam('id', 0);
 
-        $sql = "SELECT id FROM campagne WHERE id<".$this->id_campagne."  ORDER BY id DESC LIMIT 0,1";
+        $sql = "SELECT id FROM campagne WHERE id<".$this->id_campagne." AND type='".$this->type_campagne."'  ORDER BY id DESC LIMIT 0,1";
         $result = (array)Zend_Registry::get('db')->fetchAll($sql);
         $previous_id = $result[0]['id'];
 
+        $semaine = new Semaine();
+        $sem = $semaine->fetchRow("id_campagne = ".$previous_id);
+        if(!is_null($sem))
+            $nb_semaine_previous = $sem['semaine'];
+        else
+            $nb_semaine_previous = 1;
 
     $sql = "SELECT p.repas_servis, p.repas_prevus, p.id_semaine, p.id_centre
                 FROM prevision AS p
@@ -131,14 +88,16 @@ if(!array_key_exists($a['id_centre'], $centre)){
                     AND
                         p.id_semaine = ".$id_semaine."
                     AND
-                        P.id_campagne = ".$this->id_campagne;
+                        p.id_campagne = ".$this->id_campagne;
         $result = (array)Zend_Registry::get('db')->fetchAll($sql);
 
         foreach($result as $b => $a)
         {
             if(array_key_exists($a['id'], $centre)){
-                $result[$b]['parts'] = $centre[$a['id']];
-                $result[$b]['repartition'] = round((($centre[$a['id']] / $total)*100),2);
+                $moyenne =  $centre[$a['id']] / $nb_semaine_previous;
+                $total_moyen = $total / $nb_semaine_previous;
+                $result[$b]['parts'] = $moyenne;
+                $result[$b]['repartition'] = round((($moyenne / $total_moyen)*100),2);
                 
             }
             else

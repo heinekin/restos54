@@ -3,6 +3,7 @@
     <bloc type="page">
         <content method="innerHTML" id="main"><!--
             <h1> Prévisions et Répartitions pour l'ensemble de la campagne</h1>
+<h2>Vous pouvez modifier le nombre de colis attribués attribué à chaque produit pour la campagne</h2>
 <table id="tableMain">
                 <tr>
                     <td valign="top" id="leftMain">
@@ -72,7 +73,7 @@ groupField:''
     }
 
 var productColumns =  [
-            {header: "id", sortable: true, dataIndex: "id"},
+            {header: "id", sortable: true, dataIndex: "id", hidden: true},
             {header: "reference", sortable: true, dataIndex: "reference"},
             {header: "nom", sortable: true, dataIndex: "nom"},
             {header: 'conditionnement', dataIndex: 'conditionnement', sortable: true},

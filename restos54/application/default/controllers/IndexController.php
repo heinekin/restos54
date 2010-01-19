@@ -118,7 +118,18 @@ class IndexController extends Zend_Controller_Action
         $features->disableRelations(array('feature_type_id', 'parent_id'));
         $menus = $features->fetchAll(array('feature_type_id IN (3, 4)', 'parent_id '.$where_parent), 'order');
 
-
+        if(!is_null($parent) && $parent!=0 ){
+            $f = $features->fetchRow('id=' . $parent);
+            $f = $f->toArray();
+            $code = $f['code'];
+            if(substr($code, 0, 7) == 'CENTRES')
+            {
+                $tabTitle = explode("_", $code);
+                $id_centre = $tabTitle[2];
+            }
+                
+        }
+        
         $tab = array();
         // pour chaque fonctionnalité
         foreach($menus as $menu) {
@@ -130,22 +141,35 @@ class IndexController extends Zend_Controller_Action
                             '/' . $tabAction[0];
 
             // si l'utilisateur est autorisé à utilisé cette ressource ou si c'est un super utilisateur
-            if(($acl->has(new Zend_Acl_Resource($resourceName)) && $acl->isAllowed('user', $resourceName, null)) || $userSession->user->su == 1) {
+            if(($acl->has(new Zend_Acl_Resource($resourceName)) && $acl->isAllowed('user', $resourceName, null))) {
 
                 // on regarde si on a une traduction pour le titre du menu
                 $menuTitle = $menu->title;
-
                 // on récupère les enfants de l'enfant
                 $childMenu = $this->createMenuBar($menu->id, $featureTitles);
+                
                 // s'il n'y a pas d'enfant
                 if(count($childMenu)==0) {
-                    $tab[] = array(
-                            'id' => 'menu_' . $menu->id, 
-                            'text' => $menuTitle,
-                            'group' => false,
-                            'iconCls' => '',
-                            'link' => '/' . $menu->module . '/' . $menu->controller . '/' . $menu->action
-                            );
+                    if(isset($id_centre) && !is_null($id_centre))
+                    {
+                        $tab[] = array(
+                                'id' => 'menu_' . $menu->id,
+                                'text' => $menuTitle,
+                                'group' => false,
+                                'iconCls' => '',
+                                'link' => '/' . $menu->module . '/' . $menu->controller . '/' . $menu->action.'/' . $id_centre
+                                );
+                    }
+                    else
+                    {
+                        $tab[] = array(
+                                'id' => 'menu_' . $menu->id,
+                                'text' => $menuTitle,
+                                'group' => false,
+                                'iconCls' => '',
+                                'link' => '/' . $menu->module . '/' . $menu->controller . '/' . $menu->action 
+                                );
+                    }
                 }
                 // s'il y a des enfants
                 else {
@@ -154,7 +178,7 @@ class IndexController extends Zend_Controller_Action
                             'text' => $menuTitle,
                             'iconCls' => '',
                             'menu' => $childMenu, 
-                            'group' => true 
+                            'group' => true
                             );
                 }
             }
