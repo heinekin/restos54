@@ -12,3 +12,6 @@
 .silk-printer { background-image: url(../images/icon/printer.png) !important; background-repeat: no-repeat; }
 .silk-page-excel { background-image: url(../images/icon/page_excel.png) !important; background-repeat: no-repeat; }
 .silk-key-add { background-image: url(../images/icon/key_add.png) !important; background-repeat: no-repeat; }
+.silk-user-add { background-image: url(../images/icon/user_add.gif) !important; background-repeat: no-repeat; }
+.silk-user-delete { background-image: url(../images/icon/user_delete.png) !important; background-repeat: no-repeat; }
+.silk-disk { background-image: url(../images/icon/disk.png) !important; background-repeat: no-repeat; }

@@ -79,6 +79,8 @@ var MyTreeMenu = {
     
     render:function() {
         this.mytree.render();
-        this.mytree.expandAll();
+
+        this.mytree.getRootNode().collapse();
+        //this.mytree.expandAll();
     }
 };

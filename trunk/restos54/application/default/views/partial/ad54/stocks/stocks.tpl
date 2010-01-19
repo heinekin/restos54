@@ -2,16 +2,13 @@
 <blocs>
     <bloc type="page">
         <content method="innerHTML" id="main"><!--
-            <h1>Vous pouvez ici visualiser et modifier les stocks </h1>
+            <h1>Vous pouvez ici visualiser les stocks de l'entrepôt</h1>
+            <h2>Les détails concernant les mouvements de stock s'affichent en cliquant sur la cellule du produit correspondant</h2>
 <table id="tableMain">
                 <tr>
-                    <td valign="top" id="leftMain" style="width:300px">
-<div id="tabs1">
-        
-
-    </div>
-                    </td>
-                    <td valign="top"><div id="rightMain"  style="width:400px"></div>
+                    <td valign="top" id="leftMain">
+<div id="grid-example"></div>
+<div id='panel'><div id="quotas"></div></div>
                     </td>
                 </tr>
         </table>
@@ -19,159 +16,183 @@
 
     </bloc>
 <bloc type="script">        <content><![CDATA[ {literal}
-
-var tabs = new Ext.TabPanel({
-        renderTo:'tabs1',
-        resizeTabs:true, // turn on tab resizing
-        minTabWidth: 115,
-        tabWidth:135,
-        enableTabScroll:true,
-        width:800,
-        height:250,
-        defaults: {autoScroll:true}//,
-        //plugins: new Ext.ux.TabCloseMenu()
+var store2 = new Ext.data.JsonStore({
+        // store configs
+        autoDestroy: true,
+        url: 'ad54/stocks/loadstock',
+        storeId: 'myStore2',
+        // reader configs
+        root: 'data',
+        fields: ['id', {name:'reference',type:'int'}, 'nom', 'portions', {name:'conditionnement',type:'int'}, {name:'stock',type:'int'}, {name:'collecte',type:'int'}]
     });
 
-    // tab generation code
-    var index = 0;
-    while(index < 3){
-        addTab();
-    }
-    function addTab(){
-        tabs.add({
-            title: 'New Tab ' + (++index),
-            iconCls: 'tabs',
-            html: 'div1 <div id="prout' + (index) + '"></div>',
-listeners: {activate: loadGrid},
 
-            closable:true
-        }).show();
-    }
-
-    new Ext.Button({
-        text: 'Add Tab',
-        handler: addTab,
-        iconCls:'new-tab'
-    }).render(document.body, 'tabs1');
+/*var cellTips = new Ext.ux.plugins.grid.CellToolTips([
+    	{ field: 'total', tpl: '<b>Formule:</b><br />Somme des livraisons de la campagne<br />' },
+        { field: 'reste', tpl: '<b>Formule:</b><br />Reste à livrer. Entre parenthèses <br />les livraisons en surplus<br />' }
+    ]);
+*/
+    // manually load local data
+    store2.load();
 
 
-function loadGrid()
-{
-var loading = new Loading(1);
-loading.start();
-var grid = null;
-var app = new Ext.App({});
-var proxy = new Ext.data.HttpProxy(
-                           {url: '/ad54/restqprev',
-                            listeners : {
-                                write : function(store, action, result, response, rs) {
-                                        app.setAlert(response.success, response.message);
-                                        if(response.success != "Erreur !"){
-                                        rs.commit();grid.store.load();}
-                }
-                           }});
 
-var MyRecord = Ext.ux.data.CalcRecord.create([
-            {name: "id"},
-            {name: "reference", allowBlank: false, type: 'int'},
-            {name: "nom", allowBlank: false},
-            {name: "conditionnement", allowBlank: false, type: 'int'},
-            {name: "portions", allowBlank: false, type: 'int'},
-            {name: "nb_colis", allowBlank: false, type: 'int'},
-            {name: "inventaire", allowBlank: false, type: 'int'},
-            {name: 'sum', dependencies: ['inventaire', 'nb_colis'], notDirty: true, calc: function(record) {
-            if(record.isModified('nb_colis'))
-		return '<span style="color:red;">' + (record.get('inventaire') + record.get('nb_colis')) * record.get('conditionnement') +'</span>';
 
-            else
-		return (record.get('inventaire') + record.get('nb_colis')) * record.get('conditionnement');
-	}}])
+    var grid = new Ext.grid.GridPanel({
+        columnLines : true,
+                columnLines : true,
+                    id: 'grid_stock',
+                        stripeRows: true,
+                store: store2,
+                autoFit:true,
+                layout:'fit',
+tbar: [{
+            text: "Ouvrir dans une fenêtre indépendante",
+            iconCls: "silk-application-go",
+            handler: onOpen
+        }],
+        selModel: new Ext.grid.CellSelectionModel({
+                            listeners:{cellselect : function( Sel, rowIndex, colIndex )
+        {
 
-var reader = new Ext.data.JsonReader({
-            totalProperty: "total",
-            successProperty: "success",
-            idProperty: "id",
-            root: "data"
-        },MyRecord);
+        var class = grid.getView().getHeaderCell( colIndex ).className;
 
-        // The new DataWriter component.
-var writer = new Ext.data.JsonWriter({
-            encode: true,
-            writeAllFields: true
-});
-var store = new Ext.data.GroupingStore({
-            id: "previsions",
-            restful: true,     // <-- This Store is RESTful
-            proxy: proxy,
-            reader: reader,
-            writer: writer
+        if(class.include("stock") || class.include("collecte"))
+        {
 
-        });
-
-columnQTipRenderer = function(val, meta, record, ind, colInd){
-        meta.attr = 'ext:qtip="' + val + '" ext:anchorToTarget=true';
-        return val;
-
-    };
-
-  function pctChange(val){
-
-            return '<span style="color:red;">' + val + '</span>';
-
-    }
-
-var productColumns =  [
-            {header: "id", sortable: true, dataIndex: "id"},
-            {header: "reference", renderer: columnQTipRenderer, sortable: true, dataIndex: "reference"},
-            {header: "nom", sortable: true, dataIndex: "nom"},
-            {header: 'conditionnement', dataIndex: 'conditionnement', sortable: true},
-            {header: 'portions', dataIndex: 'portions', sortable: true},
-            {header: "nb de colis attribués", css: '{color:red;}', sortable: true, dataIndex: "nb_colis", editor: new Ext.form.NumberField({})},
-            {header: "inventaire fin campagne précedente", sortable: true, dataIndex: "inventaire"},
-            {header: 'Total Boites ou Pack', dataIndex: 'sum', sortable: true}
-
-];
-
-store.load();
-
-var editor = new Ext.ux.grid.RowEditor({
-            saveText: "Valider",
-            cancelText: "Annuler"
-        });
-
-grid = new Ext.grid.GridPanel({
-columnLines : true,
-            iconCls: "icon-grid",
-            frame: true,
-            title: "Les prévisions",
+            if(class.include("stock"))
+                var mouv = 'principal';
+            else var mouv = 'collecte';
+        var id = Sel.selection.record.data.id;
+            var store3 = new Ext.data.JsonStore({
+                // store configs
+                //autoDestroy: true,
+                url: 'ad54/stocks/loadstat?id='+id+'&class='+mouv,
+                //storeId: 'myStore3',
+                // reader configs
+                root: 'data',
+                fields: ['id',  'mouvement', {name:'reference',type:'int'}, 'nom', {name:'nb_colis',type:'int'}, {name:'mois',type:'date',dateFormat:'d/m/Y'}]
+            });
+            store3.load();
+var grid3 = new Ext.grid.GridPanel({
+            //id: 'grid_panel',
+ columnWidth: 0.50,
+height: 300,
+        store: store3,
+        columns: [
+            {header: 'id', sortable: true, dataIndex: 'id', hidden: true},
+            {header: 'mouvement', width:230, sortable: true, dataIndex: 'mouvement',renderer: function(val, params, record){
+                if(val.include("sortie")) return '<span style="color:red;">' + val + '</span>';
+                else    return '<span style="color:green;">' + val + '</span>';
+                            }},
+            {header: 'reference', sortable: true, dataIndex: 'reference', hidden: true},
+            {id: 'produit', header: 'produit', sortable: true, dataIndex: 'nom', hidden: true},
+            {header: 'date', renderer: Ext.util.Format.dateRenderer('d/m/Y'), sortable: true, dataIndex: 'mois'},
+            {header: 'colis', sortable: true, dataIndex: 'nb_colis'}
+        ],
+        stripeRows: true,
             autoScroll: true,
-            height: 500,
-            store: store,
-            stripeRows: true,
-            plugins: [Ext.ux.grid.DataDrop,editor],
-            columns : productColumns,
-view: new Ext.grid.GroupingView({
-forceFit:true,
-groupTextTpl: '{text} ({[values.rs.length]} {[values.rs.length > 1 ? "elements" : "element"]})',
-sortAscText: 'Tri Ascendant',
-sortDescText: 'Tri Descendant',
-columnsText: 'Colonnes',
-groupByText: 'Grouper en fonction de ce champ',
-showGroupsText: 'Activer/Desactiver Groupe'
-})
-        });
-grid.render('prout'+index);
-loading.stop();
+            viewConfig: {
+                forceFit: true,
+                sortAscText: 'Tri Ascendant',
+                sortDescText: 'Tri Descendant',
+                columnsText: 'Colonnes'
+            }
+    });
+$('panel').innerHTML = $('panel').innerHTML +="<div id='chart'></div>";
+
+var swf = swfobject.embedSWF(
+        "swf/open-flash-chart.swf",
+        "chart",
+        "400",
+        "300",
+        "9.0.0",
+        "swf/expressInstall.swf",
+        {
+            "data-file": "ad54/stocks/loadofc?id="+id+"_"+mouv,
+            "loading": "Chargement en cours..."
+        }
+    );
+
+
+var myMapPanel= new Ext.Panel({
+ columnWidth: 0.50,
+  contentEl: 'chart'
+});
+/*
+var window = new Ext.Window({
+title: 'My AM Map',
+items: myMapPanel
+}).show();*/
+/*var panneau = new Ext.Panel({
+        iconCls:'chart',
+        collapsible: true,
+        title: 'Comparaison total repas servis/repas prevus par semaine',
+        frame:true,
+        renderTo: 'quotas',
+contentEl: 'chart',
+        height:340,
+        layout:'fit'
+    });*/
+
+var w = new Ext.Window({
+        title: 'Les mouvements du stock \''+mouv+'\' -- Produit ref.' + Sel.selection.record.data.reference + ' '+Sel.selection.record.data.nom ,
+autoHeight: true,
+height: 300,
+autoScroll: true,
+        layout: 'fit',
+       // plain:true,
+        bodyStyle:'padding:5px;',
+        buttonAlign:'center',
+        layout: 'column',
+        items: [grid3,myMapPanel],
+        maximizable: true,
+        collapsible: true
+    });
+    w.show();
 }
 
-function onPrint() {
 
-Ext.ux.Printer.print(grid);
+        }
+
+
+         }}),
+        width: 900,
+        renderTo: 'grid-example',
+        //plugins: [cellTips],
+        columns: [
+            {header: 'id', sortable: true, dataIndex: 'id', hidden: true},
+            {header: 'reference', sortable: true, dataIndex: 'reference'},
+            {id: 'produit', header: 'produit', sortable: true, dataIndex: 'nom'},
+            {header: 'portions', sortable: true, dataIndex: 'portions', hidden: true},
+            {header: 'conditionnement', sortable: true, dataIndex: 'conditionnement',hidden: true},
+            {id: 'stock', header: 'stock', sortable: true, dataIndex: 'stock',
+                renderer: function(v, params, record){
+                if(!v) return 0;
+                else    return v;
+                            }},
+            {id: 'collecte', header: 'collecte', sortable: true, dataIndex: 'collecte',
+                renderer: function(v, params, record){
+                if(!v) return 0;
+                else    return v;
+                            }}
+        ],
+height: 350,
+            autoScroll: true,
+frame: true,
+        title: 'Stock actuel à l\'entrepôt',
+            viewConfig: {
+                forceFit:true,
+                sortAscText: 'Tri Ascendant',
+                sortDescText: 'Tri Descendant',
+                columnsText: 'Colonnes'
+            }
+    });
+
+function onOpen()
+{
+    grid.destroy();
 }
-
-
- // eof
-
 
         {/literal}]]></content>    </bloc>
 </blocs>

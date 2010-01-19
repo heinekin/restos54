@@ -24,23 +24,23 @@ class My_Plugin_Acl extends Zend_Controller_Plugin_abstract
             $this->_acl->addRole(new Zend_Acl_Role('user'));
             
             $userRights = new UserRightFeature();
-
-            foreach($userRights->fetchAll('user_id=' . $userSession->user->id) as $obj) {
+            $u = (array)$userRights->fetchRightFeatures($userSession->user->id);
+            
+            foreach($u as $obj) {
                 
-                $tabAction = explode('/', $obj->feature_id->action);
-                $resourceName = '/' . $obj->feature_id->module . '/' . $obj->feature_id->controller . '/' . $tabAction[0];
+                $tabAction = explode('/', $obj['action']);
+                $resourceName = '/' . $obj['module'] . '/' . $obj['controller'] . '/' . $tabAction[0];
 
                 if(!$this->_acl->has(new Zend_Acl_Resource($resourceName))) {
                     $this->_acl->add(new Zend_Acl_Resource($resourceName));
                 }
-
-                if($obj->right) {
+                if($obj['right']) {
                     $this->_acl->allow('user', $resourceName);
                 } else {
                     $this->_acl->deny('user', $resourceName);
                 }
+                
             }
-
             $aclSession = new Zend_Session_Namespace('User_Acl');
             $aclSession->acl = $this->_acl;
         }
@@ -53,7 +53,7 @@ class My_Plugin_Acl extends Zend_Controller_Plugin_abstract
 
             // si ce n'est pas un super-utilisateur, on regarde s'il a le droit d'afficher la page
             $userSession = new Zend_Session_Namespace('User_Login');
-            if($userSession->user->su == 0) {
+            if($userSession->user->su == 0 && $this->getRequest()->getModuleName() != 'default') {
 
                 $resourceName = '/' . $this->getRequest()->getModuleName() .
                                 '/' . $this->getRequest()->getControllerName() .

@@ -3,6 +3,7 @@
     <bloc type="page">
         <content method="innerHTML" id="main"><!--
             <h1>Suivi des livraisons</h1>
+<h2>Vous pouvez visualiser les livraisons effectués d'un produit pour un mois précis en cliquant sur la cellule correspondante</h2>
 <table id="tableMain">
                 <tr>
                     <td valign="top" id="leftMain">
@@ -206,6 +207,7 @@ height: 350,
 frame: true,
         title: 'Suivi des livraisons par mois',
             viewConfig: {
+                forceFit:true,
                 sortAscText: 'Tri Ascendant',
                 sortDescText: 'Tri Descendant',
                 columnsText: 'Colonnes'
