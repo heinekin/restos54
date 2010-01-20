@@ -1,1 +1,1 @@
-{include file=$this->partiel('centres', 'bds', 'index')}
+{include file=$this->partiel('centres', 'defaut', 'index')}
