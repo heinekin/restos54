@@ -48,10 +48,12 @@ class My_Restbnf extends Zend_Rest_Controller
         $this->getResponse()->setHeader('Content-Type', 'application/json', true);
         $id_semaine = $this->_getParam('id', 0);
 
+        // cherche la campagne précedente de même type
         $sql = "SELECT id FROM campagne WHERE id<".$this->id_campagne." AND type='".$this->type_campagne."'  ORDER BY id DESC LIMIT 0,1";
         $result = (array)Zend_Registry::get('db')->fetchAll($sql);
         $previous_id = $result[0]['id'];
 
+        // cherche la semaine correspondante de la campagne précédente
         $semaine = new Semaine();
         $sem = $semaine->fetchRow("id_campagne = ".$previous_id);
         if(!is_null($sem))
@@ -59,22 +61,22 @@ class My_Restbnf extends Zend_Rest_Controller
         else
             $nb_semaine_previous = 1;
 
-    $sql = "SELECT p.repas_servis, p.repas_prevus, p.id_semaine, p.id_centre
-                FROM prevision AS p
-                WHERE
-                        p.id_campagne = ".$previous_id." 
-                AND p.id_semaine=".$id_semaine;
-        $result = (array)Zend_Registry::get('db')->fetchAll($sql);
-$centre = array();
-$total = 0;
+        $sql = "SELECT p.repas_servis, p.repas_prevus, p.id_semaine, p.id_centre
+                    FROM prevision AS p
+                    WHERE
+                            p.id_campagne = ".$previous_id."
+                    AND p.id_semaine=".$id_semaine;
+            $result = (array)Zend_Registry::get('db')->fetchAll($sql);
+        $centre = array();
+        $total = 0;
         foreach($result as $a)
         {
-if(!array_key_exists($a['id_centre'], $centre)){
-    $centre[$a['id_centre']] = $a['repas_servis'];
-
-}
-    else{
-            $centre[$a['id_centre']] += $a['repas_servis'];
+            if(!array_key_exists($a['id_centre'], $centre)){
+                $centre[$a['id_centre']] = $a['repas_servis'];
+            }
+            else
+            {
+                $centre[$a['id_centre']] += $a['repas_servis'];
             }
             $total += $a['repas_servis'];
         }

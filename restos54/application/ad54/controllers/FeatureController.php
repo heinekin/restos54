@@ -1,6 +1,6 @@
 <?php
 
-class FeatureController extends Zend_Controller_Action
+class ad54_FeatureController extends Zend_Controller_Action
 {
     function indexAction()
     {
@@ -12,7 +12,7 @@ class FeatureController extends Zend_Controller_Action
         $this->getResponse()->setHeader('Content-Type', 'text/xml', true);
 
         $form = new My_Form_Feature();
-        $form->setAction('/feature/add');
+        $form->setAction('/ad54/feature/add');
         $form->submit->setLabel('ajouter');
         $this->view->formulaire = $form;
 
@@ -64,7 +64,7 @@ class FeatureController extends Zend_Controller_Action
         $this->getResponse()->setHeader('Content-Type', 'text/xml', true);
 
         $form = new My_Form_Feature();
-        $form->setAction('/feature/modify');
+        $form->setAction('/ad54/feature/modify');
         $form->submit->setLabel('modifier');
         $this->view->formulaire = $form;
 

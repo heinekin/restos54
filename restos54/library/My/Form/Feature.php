@@ -49,7 +49,7 @@ class My_Form_Feature  extends My_Form
             ->addFilter('StripTags')
             ->addFilter('StringTrim')
             ->addValidator('NotEmpty', true)
-            ->addValidator('Alpha', true)
+            ->addValidator(new Zend_Validate_Regex('/^[A-Za-z0-9._-]+$/'), true)
             ->addValidator(new Zend_Validate_StringLength(1, 25), true);
         $controller->setDecorators($this->elementDecorators);
         

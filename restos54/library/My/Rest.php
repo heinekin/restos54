@@ -85,6 +85,7 @@ foreach($test as $key => $value)
         unset($data['id']);
         unset($data['centre']);
         unset($data['profile']);
+        $data['su'] = 1;
         $user = new User();
         $result = $user->fetchRow("login='".$data['login']."' AND password='".$data['password']."'");
         if(!is_null($result))

@@ -42,7 +42,7 @@ var FeatureRight = {
             enableDD: false,
             containerScroll: true,
             rootVisible:true,
-            dataUrl: '/profile/list/id/' + profileId ,
+            dataUrl: '/ad54/profile/list/id/' + profileId ,
             root: {
                 text: 'Fonctionnalités',
                 id: 'tree_0'
@@ -200,7 +200,7 @@ var FeatureRight = {
                 del_features+="{\"id\": \"" + e.value + "\"},";
             }}
         });
-        FeatureRight.sendAjax('/profile/update', {features: features, del_features: del_features, profile_id : FeatureRight.profileId}, 'post');
+        FeatureRight.sendAjax('/ad54/profile/update', {features: features, del_features: del_features, profile_id : FeatureRight.profileId}, 'post');
     },
 
     render: function(element) {
