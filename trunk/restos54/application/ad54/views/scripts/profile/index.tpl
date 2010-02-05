@@ -51,7 +51,7 @@
                 },
                 functions: {
                     remove: {
-                        action: '/profile/delete/',
+                        action: '/ad54/profile/delete/',
                         method: 'post',
                         confirm: {
                             title: 'Confirmation',
@@ -59,11 +59,11 @@
                         }
                     },
                     add: {
-                        action: '/profile/add/',
+                        action: '/ad54/profile/add/',
                         method: 'get'
                     },
                     right: {
-                        action: '/profile/right/',
+                        action: '/ad54/profile/right/',
                         method: 'get'
                     }
                 },

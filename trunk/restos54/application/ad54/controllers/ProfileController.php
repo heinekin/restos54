@@ -1,6 +1,6 @@
 <?php
 
-class ProfileController extends Zend_Controller_Action 
+class ad54_ProfileController extends Zend_Controller_Action 
 {
 
     function indexAction()
