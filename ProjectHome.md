@@ -1,0 +1,1 @@
+Un nouveau Système d’information et de gestion des stocks et des approvisionnements pour les Restos du cœur 54 doit être mis en place afin d’améliorer le suivi des stocks et de proposer une aide à la décision, ultérieurement.
